@@ -28,14 +28,143 @@
 body{min-height:100vh;background:radial-gradient(900px 600px at 70% 30%,#2a2a28,#161615);color:#d9d7d2;font-family:Inter,system-ui,sans-serif;position:relative;overflow-x:hidden}
 body:before{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");opacity:.13;mix-blend-mode:overlay;pointer-events:none}
 .mark{position:fixed;top:40px;right:48px;font-size:12px;letter-spacing:.3em;color:#6d6b66;text-transform:uppercase;writing-mode:vertical-rl}
-main{position:fixed;left:48px;bottom:44px;display:grid;grid-template-columns:auto 1fr;gap:6px 16px;align-items:center}
+main{position:fixed;left:48px;bottom:44px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 16px;align-items:center}
 .avatar{grid-row:span 3;width:52px;height:52px;display:block}.avatar img{width:52px;height:52px;border-radius:50%;object-fit:cover;display:block;box-shadow:0 0 0 1px rgba(217,215,210,.45);pointer-events:none;user-select:none;-webkit-user-drag:none;-webkit-touch-callout:none}
 h1{font-size:15px;font-weight:600;letter-spacing:.01em}.txt{min-width:0}p{font-size:13px;color:#8d8a84;margin-top:3px}.roles{line-height:1.35}.roles span{display:block}
 .loc{font-size:11px;color:#6d6b66;margin-top:1px;letter-spacing:.02em}.links{grid-column:2;display:flex;gap:18px;margin-top:8px}.links a{display:flex;gap:6px;align-items:center;font-size:12px;color:#a9a6a0}.links a:hover{color:#fff}
-@media(max-width:600px){main{left:24px;right:24px;bottom:32px}.mark{right:20px;top:24px}}</style>
+main:has(#open-contact:checked){max-height:calc(100vh - 48px);max-height:calc(100svh - 48px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(217,215,210,.35) transparent}
+.contact{display:none;grid-column:1/-1;gap:8px;margin-bottom:16px;padding:12px;border:1px solid rgba(217,215,210,.14);border-radius:8px;background:rgba(22,22,21,.4);color-scheme:dark}
+main:has(#open-contact:checked) .contact{display:grid;animation:f .45s ease-out both}
+.thanks{display:grid}
+.contact-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.contact h2{font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#a9a6a0}
+.thanks h2{font-size:15px;font-weight:500;letter-spacing:.01em;text-transform:none;color:#d9d7d2}
+.thanks p{margin-top:0}
+.contact .field{display:grid;gap:4px;font-size:11px;color:#8d8a84}
+.contact input:not([type="hidden"]),.contact textarea{width:100%;min-width:0;margin:0;padding:7px 8px;border:1px solid rgba(217,215,210,.18);border-radius:4px;background:rgba(0,0,0,.28);color:#d9d7d2;font:inherit;font-size:13px;-webkit-appearance:none;appearance:none}
+.contact textarea{resize:vertical;min-height:68px;max-height:160px;line-height:1.4}
+.contact input:not([type="hidden"]):focus,.contact textarea:focus{outline:2px solid rgba(217,215,210,.55);outline-offset:1px}
+.contact input:-webkit-autofill,.contact textarea:-webkit-autofill{-webkit-text-fill-color:#d9d7d2;caret-color:#d9d7d2;box-shadow:0 0 0 1000px #1a1a19 inset}
+.code{margin-left:.45em;color:#d9d7d2;font-size:13px;font-weight:500}
+.contact button{justify-self:start;-webkit-appearance:none;appearance:none;margin:0;padding:7px 14px;border:0;border-radius:4px;background:#d9d7d2;color:#1c1c1b;font:inherit;font-size:12px;font-weight:500;cursor:pointer}
+.contact button:hover:not(:disabled){background:#fff}
+.contact button:disabled{opacity:.38;cursor:default}
+.contact button:focus-visible{outline:2px solid currentColor;outline-offset:3px}
+.note,.err{margin-top:0;font-size:11px;line-height:1.4;color:#6d6b66}
+.err{color:#d9d7d2}
+.close{font-size:11px;color:#6d6b66;cursor:pointer}
+.close:hover{color:#fff}
+.hp{display:none}
+.contact-switch{position:relative;display:flex;align-items:center}
+.contact-switch input{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.contact-switch label{display:flex;gap:6px;align-items:center;font-size:12px;color:#a9a6a0;cursor:pointer}
+.contact-switch label:hover,.contact-switch input:focus-visible+label{color:#fff}
+.contact-switch input:focus-visible+label{outline:2px solid currentColor;outline-offset:3px;border-radius:3px}
+.links{flex-wrap:wrap;row-gap:8px}
+@media(max-width:600px){main{left:24px;right:24px;bottom:32px}.mark{right:20px;top:24px}body:has(#open-contact:checked) .mark{visibility:hidden}.contact input:not([type="hidden"]),.contact textarea{font-size:16px}}</style>
 </head>
-<body>
-<span class="mark" aria-hidden="true">60.74°N 24.77°E</span><main class="fade"><span class="avatar" oncontextmenu="return false"><img src="assets/profile.jpg" alt="Iiro Lehtokoski" width="52" height="52" draggable="false" oncontextmenu="return false"></span>
-<div class="txt"><h1>Iiro Lehtokoski</h1><p class="roles"><span>· Locomotive Driver</span><span>· IT Engineering Student</span></p><p class="loc">Finland</p></div><ul class="links"><li><a href="https://x.com/iirolehtokoski" rel="me noopener" aria-label="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3l-4.9-6.4L6.4 22H3.3l7.3-8.3L1 2h6.4l4.4 5.9L18.9 2Zm-1.1 18h1.7L6.3 3.9H4.5L17.8 20Z"/></svg><span>X</span></a></li><li><a href="https://www.linkedin.com/in/iirolehtokoski/" rel="me noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 20.5h-3.6v-5.6c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9v5.7H9.4V9h3.4v1.6h.1c.5-.9 1.6-1.8 3.4-1.8 3.6 0 4.3 2.4 4.3 5.5v6.2ZM5.3 7.4a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2ZM7.1 20.5H3.6V9h3.5v11.5ZM22.2 0H1.8C.8 0 0 .8 0 1.7v20.6c0 .9.8 1.7 1.8 1.7h20.4c1 0 1.8-.8 1.8-1.7V1.7C24 .8 23.2 0 22.2 0Z"/></svg><span>LinkedIn</span></a></li><li><a href="https://github.com/iirolehtokoski" rel="me noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4 18.3 4.3 18.3 4.3c.6 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.1 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg><span>GitHub</span></a></li></ul></main>
+<body id="home">
+<span class="mark" aria-hidden="true">60.74°N 24.77°E</span><main class="fade">
+<!-- Recipient: swap iiro.lehtokoski@gmail.com for the FormSubmit alias after activation. -->
+<form id="contact" class="contact" action="https://formsubmit.co/iiro.lehtokoski@gmail.com" method="POST" accept-charset="UTF-8" aria-labelledby="contact-title">
+<div class="contact-head"><h2 id="contact-title">Contact</h2><label for="open-contact" class="close">Close</label></div>
+<label class="field">Name<input type="text" name="name" autocomplete="name" required maxlength="200"></label>
+<label class="field">Email<input type="email" name="email" autocomplete="email" required maxlength="200"></label>
+<label class="field">Message<textarea name="message" required maxlength="5000" rows="3"></textarea></label>
+<label class="field" id="check-box" hidden><span>Type these characters <span class="code" id="check-code" translate="no"></span></span><input id="human-check" type="text" inputmode="text" autocomplete="off" autocapitalize="characters" autocorrect="off" spellcheck="false" maxlength="12" aria-describedby="check-error"></label>
+<p class="err" id="check-error" hidden aria-live="polite">Those characters don't match.</p>
+<div class="hp" aria-hidden="true"><label class="field">Website<input type="text" name="_honey" tabindex="-1" autocomplete="off"></label></div>
+<input type="hidden" name="_subject" value="New message from iirolehtokoski.fi">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_captcha" value="true">
+<input type="hidden" name="_next" value="https://iirolehtokoski.fi/thanks.html">
+<button type="submit">Send</button>
+<p class="note">Next step: a CAPTCHA, so automated posts are blocked.</p>
+</form>
+<span class="avatar" oncontextmenu="return false"><img src="assets/profile.jpg" alt="Iiro Lehtokoski" width="52" height="52" draggable="false" oncontextmenu="return false"></span>
+<div class="txt"><h1>Iiro Lehtokoski</h1><p class="roles"><span>· Locomotive Driver</span><span>· IT Engineering Student</span></p><p class="loc">Finland</p></div><ul class="links"><li><a href="https://x.com/iirolehtokoski" rel="me noopener" aria-label="X"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.9 2H22l-6.8 7.8L23.2 22h-6.3l-4.9-6.4L6.4 22H3.3l7.3-8.3L1 2h6.4l4.4 5.9L18.9 2Zm-1.1 18h1.7L6.3 3.9H4.5L17.8 20Z"/></svg><span>X</span></a></li><li><a href="https://www.linkedin.com/in/iirolehtokoski/" rel="me noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 20.5h-3.6v-5.6c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9v5.7H9.4V9h3.4v1.6h.1c.5-.9 1.6-1.8 3.4-1.8 3.6 0 4.3 2.4 4.3 5.5v6.2ZM5.3 7.4a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2ZM7.1 20.5H3.6V9h3.5v11.5ZM22.2 0H1.8C.8 0 0 .8 0 1.7v20.6c0 .9.8 1.7 1.8 1.7h20.4c1 0 1.8-.8 1.8-1.7V1.7C24 .8 23.2 0 22.2 0Z"/></svg><span>LinkedIn</span></a></li><li><a href="https://github.com/iirolehtokoski" rel="me noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4 18.3 4.3 18.3 4.3c.6 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.1 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg><span>GitHub</span></a></li><li class="contact-switch"><input type="checkbox" id="open-contact" aria-controls="contact"><label for="open-contact"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg><span>Contact</span></label></li></ul></main>
+<script>
+(function () {
+  var form = document.getElementById('contact');
+  var opener = document.getElementById('open-contact');
+  var check = document.getElementById('human-check');
+  var shown = document.getElementById('check-code');
+  var error = document.getElementById('check-error');
+  var box = document.getElementById('check-box');
+  if (!form || !opener || !check || !shown || !box) return;
+
+  var alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  var code = '';
+  for (var i = 0; i < 5; i++) code += alphabet[Math.floor(Math.random() * alphabet.length)];
+  shown.textContent = code.split('').join(' ');
+  box.hidden = false;
+  check.required = true;
+
+  function typed() { return check.value.replace(/\s+/g, '').toUpperCase(); }
+  function good() { return typed() === code; }
+  function syncReply() {
+    var email = form.elements.email.value.trim();
+    var reply = form.elements['_replyto'];
+    if (!reply) {
+      reply = document.createElement('input');
+      reply.type = 'hidden';
+      reply.name = '_replyto';
+      form.appendChild(reply);
+    }
+    reply.value = email;
+  }
+  form.elements.email.addEventListener('input', syncReply);
+  form.elements.email.addEventListener('change', syncReply);
+  form.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') syncReply();
+  });
+
+  check.addEventListener('input', function () {
+    var value = typed();
+    var showError = value.length >= code.length && value !== code;
+    error.hidden = !showError;
+    if (showError) check.setAttribute('aria-invalid', 'true');
+    else check.removeAttribute('aria-invalid');
+  });
+
+  opener.addEventListener('change', function () {
+    if (!opener.checked) return;
+    requestAnimationFrame(function () { form.elements.name.focus(); });
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && opener.checked) {
+      opener.checked = false;
+      opener.focus();
+    }
+  });
+
+  form.addEventListener('submit', function (event) {
+    ['name', 'email', 'message'].forEach(function (key) {
+      form.elements[key].value = form.elements[key].value.trim();
+    });
+    var name = form.elements.name;
+    var message = form.elements.message;
+    if (!name.value || !message.value) {
+      event.preventDefault();
+      var empty = name.value ? message : name;
+      empty.setCustomValidity('Please fill in this field.');
+      empty.reportValidity();
+      empty.addEventListener('input', function clear() {
+        empty.setCustomValidity('');
+        empty.removeEventListener('input', clear);
+      });
+      return;
+    }
+    if (!good()) {
+      event.preventDefault();
+      check.setAttribute('aria-invalid', 'true');
+      error.hidden = false;
+      check.focus();
+      return;
+    }
+    syncReply();
+  });
+})();
+</script>
 </body>
 </html>
